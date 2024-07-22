@@ -4,31 +4,31 @@ import { StyleSheet, Text, View,ScrollView ,Image, TouchableOpacity,StatusBar } 
 
 
 export default function Transactions({ navigation }) {
-  const [items,setItems] = useState([
-    {key :1 , item : 'Nourriture' , icon_img : require('../assets/categories_depense/Nourriture.png') },
-    {key :2 , item : 'Transport' , icon_img : require('../assets/categories_depense/transport.png') },
-    {key :24 , item : 'Electricité',icon_img : require('../assets/categories_depense/electricite.png') },
-    {key :3 , item : 'Scolarité' ,icon_img : require('../assets/categories_depense/etudes.png') },
-    {key :17 , item : 'Loyer' ,icon_img : require('../assets/categories_depense/Loyer.png')},
-    {key :4 , item : 'Vêtements', icon_img : require('../assets/categories_depense/Vetement.png') },
-    {key :5 , item : 'Cigarette',icon_img : require('../assets/categories_depense/cigarettes.png') },
-    {key :6 , item : 'Amusement',icon_img : require('../assets/categories_depense/amusement.png')},
-    {key :7 , item : 'Sport' ,icon_img : require('../assets/categories_depense/sport.png')},
-    {key :8 , item : 'Santé' ,icon_img : require('../assets/categories_depense/santé.png')},
-    {key :9 , item : 'Voyage',icon_img : require('../assets/categories_depense/voyage.png')},
-    {key :10 , item : 'Achat' ,icon_img : require('../assets/categories_depense/Achat.png')},
-    {key :11 , item : 'Cellulaire',icon_img : require('../assets/categories_depense/Telecom.png')},
-    {key :12 , item : 'Assurance' ,icon_img : require('../assets/categories_depense/assurance.png')},
-    {key :25 , item : 'Musique' ,icon_img : require('../assets/categories_depense/Musique.png')},
-    {key :13 , item : 'Dette',icon_img : require('../assets/categories_depense/Dette.png') },
-    {key :14 , item : 'Electronique' ,icon_img : require('../assets/categories_depense/electronique.png')},
-    {key :15 , item : 'Revy',icon_img : require('../assets/categories_depense/revy.png') },
-    {key :16 , item : 'Réparation' ,icon_img : require('../assets/categories_depense/reparation.png') },
-    {key :18 , item : 'Animaux',icon_img : require('../assets/categories_depense/chien.png') },
-    {key :19 , item : 'Cadeaux' ,icon_img : require('../assets/categories_depense/cadeau.png')},
-    {key :20 , item : 'Loterie',icon_img : require('../assets/categories_depense/loterie.png') },
-    {key :22 , item : 'Gouter',icon_img : require('../assets/categories_depense/pizza.png') },
-    {key :23 , item : 'Evènement' ,icon_img : require('../assets/categories_depense/Evenement.png')},
+  const [categories,setcategories] = useState([
+    {key :1 , categorie : 'Nourriture' , icon_img : require('../assets/categories_depense/Nourriture.png') },
+    {key :2 , categorie : 'Transport' , icon_img : require('../assets/categories_depense/transport.png') },
+    {key :24 , categorie : 'Electricité',icon_img : require('../assets/categories_depense/electricite.png') },
+    {key :3 , categorie : 'Scolarité' ,icon_img : require('../assets/categories_depense/etudes.png') },
+    {key :17 , categorie : 'Loyer' ,icon_img : require('../assets/categories_depense/Loyer.png')},
+    {key :4 , categorie : 'Vêtements', icon_img : require('../assets/categories_depense/Vetement.png') },
+    {key :5 , categorie : 'Cigarette',icon_img : require('../assets/categories_depense/cigarettes.png') },
+    {key :6 , categorie : 'Amusement',icon_img : require('../assets/categories_depense/amusement.png')},
+    {key :7 , categorie : 'Sport' ,icon_img : require('../assets/categories_depense/sport.png')},
+    {key :8 , categorie : 'Santé' ,icon_img : require('../assets/categories_depense/santé.png')},
+    {key :9 , categorie : 'Voyage',icon_img : require('../assets/categories_depense/voyage.png')},
+    {key :10 , categorie : 'Achat' ,icon_img : require('../assets/categories_depense/Achat.png')},
+    {key :11 , categorie : 'Cellulaire',icon_img : require('../assets/categories_depense/Telecom.png')},
+    {key :12 , categorie : 'Assurance' ,icon_img : require('../assets/categories_depense/assurance.png')},
+    {key :25 , categorie : 'Musique' ,icon_img : require('../assets/categories_depense/Musique.png')},
+    {key :13 , categorie : 'Dette',icon_img : require('../assets/categories_depense/Dette.png') },
+    {key :14 , categorie : 'Electronique' ,icon_img : require('../assets/categories_depense/electronique.png')},
+    {key :15 , categorie : 'Revy',icon_img : require('../assets/categories_depense/revy.png') },
+    {key :16 , categorie : 'Réparation' ,icon_img : require('../assets/categories_depense/reparation.png') },
+    {key :18 , categorie : 'Animaux',icon_img : require('../assets/categories_depense/chien.png') },
+    {key :19 , categorie : 'Cadeaux' ,icon_img : require('../assets/categories_depense/cadeau.png')},
+    {key :20 , categorie : 'Loterie',icon_img : require('../assets/categories_depense/loterie.png') },
+    {key :22 , categorie : 'Gouter',icon_img : require('../assets/categories_depense/pizza.png') },
+    {key :23 , categorie : 'Evènement' ,icon_img : require('../assets/categories_depense/Evenement.png')},
   ])
 
   return ( 
@@ -37,11 +37,11 @@ export default function Transactions({ navigation }) {
         <ScrollView>
           <View style={Styles.content}>
             {
-              items.map((object) => {
+              categories.map((object) => {
                 return <TouchableOpacity  key= {object.key} onPress={() => navigation.navigate("Ajout_Depense",object)}>
-                          <View style={Styles.item}>
+                          <View style={Styles.categorie}>
                               <Image source={object.icon_img} style={{ width:40 , height:40}}/>
-                              <Text style={{ color:"#747264"}}>{object.item}</Text>
+                              <Text style={{ color:"#747264"}}>{object.categorie}</Text>
                           </View>
                       </TouchableOpacity>
                })
@@ -63,7 +63,7 @@ const Styles = StyleSheet.create({
     flexWrap : 'wrap',
     justifyContent: 'space-around',
   },
-  item:{
+  categorie:{
     width : 90, 
     height : 90,
     marginVertical : 15,

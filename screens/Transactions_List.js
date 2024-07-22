@@ -4,13 +4,13 @@ import { StyleSheet, Text, View,ScrollView,Image,RefreshControl,FlatList,Section
 
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused,useFocusEffect } from '@react-navigation/native';
-import { img_dep,somme,transform_date } from '../fonctions/fonctions';
+import { img_trans,somme,transform_date } from '../fonctions/fonctions';
 
 const logo_empty_list = require('../assets/Vide.png');
     
 export default function Transactions_List() { 
 
-  const [depenses,setdepenses] = useState([]); 
+  const [transactions,settransactions] = useState([]); 
   const [refreshing,setrefreshing] = useState(false);
   const [sections,setsections] = useState([]);
   const [totalMois,setTotalMois] = useState(0);
@@ -19,10 +19,10 @@ export default function Transactions_List() {
 
   const onRefresh = async () => {
         const  db = await SQLite.openDatabaseAsync('appFiDatabase.db');  
-        const allRows = await db.getAllAsync('SELECT * FROM depenses ORDER BY date DESC '); 
-        setdepenses(allRows);
+        const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC '); 
+        settransactions(allRows);
 
-        const groupedData =  depenses.reduce((acc, curr) => {
+        const groupedData =  transactions.reduce((acc, curr) => {
           const date = curr.date;
           if (!acc[date]) {
             acc[date] = [];
@@ -55,20 +55,23 @@ export default function Transactions_List() {
     const setupDatabase = async () => {
       const db = await SQLite.openDatabaseAsync('appFiDatabase.db'); 
       try {
+
         await db.execAsync(`
             PRAGMA journal_mode = WAL;   
-            CREATE TABLE IF NOT EXISTS depenses( 
-              id INTEGER PRIMARY KEY NOT NULL,
+            CREATE TABLE IF NOT EXISTS transactions( 
+              id_trans INTEGER PRIMARY KEY NOT NULL,
               note VARCHAR(100),
               montant VARCHAR(50),  
               date DATE,
+              categorie VARCHAR(50),
               type VARCHAR(20) 
             ); 
         `);  
-        const allRows = await db.getAllAsync('SELECT * FROM depenses ORDER BY date DESC'); 
-        setdepenses(allRows);
-
-        const groupedData = depenses.reduce((acc, curr) => {
+        const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC'); 
+        settransactions(allRows);
+        
+    
+        const groupedData = transactions.reduce((acc, curr) => {
           const date = curr.date;
           if (!acc[date]) {
             acc[date] = [];
@@ -113,7 +116,7 @@ export default function Transactions_List() {
    
   return (
         <View style={styles.container}> 
-                <View style={styles.dep_mois} >
+                <View style={styles.trans_mois} >
                      <Text>{totalMois} </Text> 
                      <Text>Ce Mois</Text> 
                 </View>
@@ -129,8 +132,8 @@ export default function Transactions_List() {
                           sections={sections}
                           keyExtractor={(item, index) => item.date + index}
                           renderItem={({ item }) => (
-                              <View style={styles.depense} >
-                                <Image source={img_dep(item.type)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
+                              <View style={styles.transaction} >
+                                <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
                                 <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>
                                 <Text style={{marginRight: 20}}>-{item.montant}</Text>
                               </View> 
@@ -160,7 +163,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: 'yellow',
     },
-    depense: {
+    transaction: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -174,7 +177,7 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       marginRight: 100
     },
-    dep_mois: {
+    trans_mois: {
       alignItems: 'center',
       justifyContent: 'center',
       height: 70,
@@ -185,14 +188,14 @@ const styles = StyleSheet.create({
 {
   /*
   
-  depenses.map((item) => {
+  transactions.map((item) => {
 
     return   <View key={item.id}>
                 <Text > 
                   {transform_date(item.date)}
                 </Text>
                 <View style={styles.depense} >
-                      <Image source={img_dep(item.type)} style={{width:40,height:40 , marginLeft: 15,marginBottom:5}}/>
+                      <Image source={img_trans(item.type)} style={{width:40,height:40 , marginLeft: 15,marginBottom:5}}/>
                       <Text style={{ marginRight: 140}}>{item.note}</Text>
                       <Text style={{marginRight: 20}}>-{item.montant}</Text>
                 </View>
@@ -202,14 +205,14 @@ const styles = StyleSheet.create({
 
 
    /* <FlatList 
-                        data={depenses}
+                        data={transactions}
                         renderItem={({item}) => (
                                    <View >
                                       <Text> 
                                         {transform_date(item.date)}
                                       </Text>
                                       <View style={styles.depense} >
-                                            <Image source={img_dep(item.type)} style={{width:40,height:40 , marginLeft: 15,marginBottom:5}}/>
+                                            <Image source={img_trans(item.type)} style={{width:40,height:40 , marginLeft: 15,marginBottom:5}}/>
                                             <Text style={{ marginRight: 140}}>{item.note}</Text>
                                             <Text style={{marginRight: 20}}>-{item.montant}</Text>
                                       </View>

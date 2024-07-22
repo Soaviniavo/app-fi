@@ -1,4 +1,4 @@
- export const img_dep = (depense_name) => {
+ export const img_trans = (depense_name) => {
     if(depense_name === 'Transport'){
       let img = require('../assets/categories_depense/transport.png');
       return img;

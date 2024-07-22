@@ -4,15 +4,16 @@ import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { getDatabase, insertDepense,deleteAllDepenses, getAllDepense } from '../database/db';
 
 export default function Ajout_Depense({ route, navigation }) {
+
 const [note,setnote] = useState("");
 const [montant,setmontant] = useState("");
 const [date,setdate] = useState(new Date());
-const [showpicker,setshowpicker] = useState(false)
+const [showpicker,setshowpicker] = useState(false);
 const [date_dep,setdate_dep] = useState("");
 const [isdisabled_btn,setisdisable_btn] = useState(true);
 
 
-const  item  = route.params.item ;
+const  categorie  = route.params.categorie ;
 const  icon_img  = route.params.icon_img ; 
 
 const toogleDatePicker = () => {
@@ -49,7 +50,7 @@ const onChange = ({type},selectedDate) =>  {
         
          <View style={[Styles.box,Styles.depense]}>
              <Image source={icon_img} style={{  width:75 , height:75}}/>
-             <Text style={{ marginBottom:2, fontSize: 18, color:"#747264"}}>{item}</Text>
+             <Text style={{ marginBottom:2, fontSize: 18, color:"#747264"}}>{categorie}</Text>
          </View>
          <View style={[Styles.box,Styles.input_container]}>
                 <View style={Styles.input_box} >
@@ -94,9 +95,8 @@ const onChange = ({type},selectedDate) =>  {
                 async () => {
                   try {
                     let valid_date = get_Date(date);
-                    await insertDepense(note,montant,valid_date,item);
-                    const allDepenses = getAllDepense();
-                    console.log(allDepenses);
+                    let type = "dépense";
+                    await insertDepense(note,montant,valid_date,categorie,type);
                     navigation.navigate( 'Liste');
                     return console.log("insertion successfull");
                   } catch (error) {
@@ -105,8 +105,9 @@ const onChange = ({type},selectedDate) =>  {
                   } 
                 }
               } disabled={!isdisabled_btn}/>
+              
             {
-               /*  <Button title={'Liste'} onPress={() => navigation.navigate( 'Liste')}/>
+              /*  <Button title={'Liste'} onPress={() => navigation.navigate( 'Liste')}/>
                  <Button title={'delete'} onPress={
                    async () => {
                      await deleteAllDepenses(); 

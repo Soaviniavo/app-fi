@@ -5,23 +5,27 @@ export const getDatabase = async () => {
   return  SQLite.openDatabaseAsync('appFiDatabase.db');
 }
 
-export const getAllDepense = async () => {
+export const getAlltransactions = async () => {
   const db = await getDatabase();
-  const allRows = await db.getAllAsync('SELECT * FROM transactions');
+  const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC');
   return allRows ; 
 }
 
 export const get_depenseMensuel= async () => {
   const db = await getDatabase();
-  const allRows = await db.getAllAsync('SELECT * FROM transactions');
-  var T = somme(allRows);
-  console.log(T);
-  return T;
+  const allRows = await db.getAllAsync('SELECT * FROM transactions WHERE type = "dépense" ');
+  return allRows;
+}
+
+export const get_revenuMensuel= async () => {
+  const db = await getDatabase();
+  const allRows = await db.getAllAsync('SELECT * FROM transactions WHERE type = "revenu" ');
+  return allRows;
 }
 
 
 
-export const insertDepense = async (_note,_montant,_date,_categorie,_type) => {
+export const insertTransaction = async (_note,_montant,_date,_categorie,_type) => {
   const db = await getDatabase();
   console.log(_note,_montant,_date,_categorie,_type);
   const statement = await db.prepareAsync(

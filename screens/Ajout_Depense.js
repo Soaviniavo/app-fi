@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View , Button,Image,TextInput,Pressable,Platform,StatusBar } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
-import { getDatabase, insertDepense,deleteAllDepenses, getAllDepense } from '../database/db';
+import { getDatabase, insertTransaction,deleteAllDepenses } from '../database/db';
 
 export default function Ajout_Depense({ route, navigation }) {
 
@@ -96,7 +96,7 @@ const onChange = ({type},selectedDate) =>  {
                   try {
                     let valid_date = get_Date(date);
                     let type = "dépense";
-                    await insertDepense(note,montant,valid_date,categorie,type);
+                    await insertTransaction(note,montant,valid_date,categorie,type);
                     navigation.navigate( 'Liste');
                     return console.log("insertion successfull");
                   } catch (error) {
@@ -106,17 +106,6 @@ const onChange = ({type},selectedDate) =>  {
                 }
               } disabled={!isdisabled_btn}/>
               
-            {
-              /*  <Button title={'Liste'} onPress={() => navigation.navigate( 'Liste')}/>
-                 <Button title={'delete'} onPress={
-                   async () => {
-                     await deleteAllDepenses(); 
-                     console.log('depenses deleted !'); 
-                   }
-                 }  />*/
-            }
-             
-
          </View>
     </View>
   );

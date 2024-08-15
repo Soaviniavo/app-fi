@@ -12,6 +12,7 @@ export default function Transactions({ navigation }) {
     {key :17 , categorie : 'Loyer' ,icon_img : require('../assets/categories_depense/Loyer.png')},
     {key :4 , categorie : 'Vêtements', icon_img : require('../assets/categories_depense/Vetement.png') },
     {key :5 , categorie : 'Cigarette',icon_img : require('../assets/categories_depense/cigarettes.png') },
+    {key :26 , categorie : 'Carburant' , icon_img : require('../assets/categories_depense/carburant.png') },
     {key :6 , categorie : 'Amusement',icon_img : require('../assets/categories_depense/amusement.png')},
     {key :7 , categorie : 'Sport' ,icon_img : require('../assets/categories_depense/sport.png')},
     {key :8 , categorie : 'Santé' ,icon_img : require('../assets/categories_depense/santé.png')},

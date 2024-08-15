@@ -1,10 +1,11 @@
 import React, {useState,useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,ScrollView,Image,RefreshControl,FlatList,SectionList } from 'react-native';
+import { StyleSheet, Text, View,Image,RefreshControl,SectionList } from 'react-native';
 
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused,useFocusEffect } from '@react-navigation/native';
-import { img_trans,somme,transform_date } from '../fonctions/fonctions';
+import { to_section_data,groupData, img_trans,somme,transform_date } from '../fonctions/fonctions';
+import { getAlltransactions , get_depenseMensuel,get_revenuMensuel } from '../database/db';
 
 const logo_empty_list = require('../assets/Vide.png');
     
@@ -13,49 +14,32 @@ export default function Transactions_List() {
   const [transactions,settransactions] = useState([]); 
   const [refreshing,setrefreshing] = useState(false);
   const [sections,setsections] = useState([]);
-  const [totalMois,setTotalMois] = useState(0);
-  
+  const [SommeDepMensuel,setSommeDepMensuel] = useState(0);
+  const [SommeRevMensuel,setSommeRevMensuel] = useState(0);
 
 
   const onRefresh = async () => {
         const  db = await SQLite.openDatabaseAsync('appFiDatabase.db');  
         const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC '); 
+        const depenseMensuel = await get_depenseMensuel();
+        const revenuMensuel = await get_revenuMensuel();
         settransactions(allRows);
+        setSommeDepMensuel(somme(depenseMensuel));
+        setSommeRevMensuel(somme(revenuMensuel));
 
-        const groupedData =  transactions.reduce((acc, curr) => {
-          const date = curr.date;
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(curr);
-
-          return acc;
-        }, {}); 
-
-        const S = Object.keys(groupedData).map(date => ({
-          title: date,
-          montant :  somme(groupedData[date]),
-          data: groupedData[date]
-        }));
-        const total_mois = Object.keys(groupedData).map(date => {
-          let T = 0 ; 
-          T = T + somme(groupedData[date]);
-          return T;
-       })
-        const sum = total_mois.reduce((accumulator, currentValue) => {
-          return accumulator + currentValue;
-        }, 0);
-
-        setTotalMois(sum);
-        setsections(S);
+        // Grouper les transactions par jours
+        const groupedData =  groupData(transactions);
+        const Data_par_jour = to_section_data(groupedData);
+       
+        setsections(Data_par_jour);
   }
 
   
   useEffect(() => {
+
     const setupDatabase = async () => {
       const db = await SQLite.openDatabaseAsync('appFiDatabase.db'); 
       try {
-
         await db.execAsync(`
             PRAGMA journal_mode = WAL;   
             CREATE TABLE IF NOT EXISTS transactions( 
@@ -67,40 +51,22 @@ export default function Transactions_List() {
               type VARCHAR(20) 
             ); 
         `);  
-        const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC'); 
+      
+        const allRows = await getAlltransactions(); 
+        const depenseMensuel = await get_depenseMensuel();
+        const revenuMensuel = await get_revenuMensuel();
+
         settransactions(allRows);
+        setSommeDepMensuel(somme(depenseMensuel));
+        setSommeRevMensuel(somme(revenuMensuel));
         
-    
-        const groupedData = transactions.reduce((acc, curr) => {
-          const date = curr.date;
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(curr);
-          
-          return acc;
-        }, {}); 
 
-     
-        const S = Object.keys(groupedData).map(date => ({
-          title: date,
-          montant :  somme(groupedData[date]),
-          data: groupedData[date]
-        }));
 
-        const total_mois = Object.keys(groupedData).map(date => {
-           let T = 0 ; 
-           T = T + somme(groupedData[date]);
-           return T;
-        })
+         // Grouper les transactions par jours
+        const groupedData = groupData(transactions);
+        const Data_par_jour = to_section_data(groupedData);
+        setsections(Data_par_jour);
 
-        
-          const sum = total_mois.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue;
-          }, 0);
-
-         setTotalMois(sum);
-         setsections(S);
 
       } catch (error) {  
         console.error(error) ;
@@ -108,17 +74,22 @@ export default function Transactions_List() {
       }
     };
 
-   setupDatabase();
+    setupDatabase();
+    
 
-  },[]);
 
+
+  },[])
+
+  
 
    
   return (
         <View style={styles.container}> 
                 <View style={styles.trans_mois} >
-                     <Text>{totalMois} </Text> 
                      <Text>Ce Mois</Text> 
+                     <Text>Dépenses :{SommeDepMensuel} </Text> 
+                     <Text>revenus :{SommeRevMensuel} </Text> 
                 </View>
                 <StatusBar backgroundColor="green" />          
                     {
@@ -132,16 +103,23 @@ export default function Transactions_List() {
                           sections={sections}
                           keyExtractor={(item, index) => item.date + index}
                           renderItem={({ item }) => (
-                              <View style={styles.transaction} >
+                              <View style={ item.type === 'revenu' ? [styles.transaction,{backgroundColor:'green'}] : [styles.transaction,{backgroundColor:'red'}]} >
                                 <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
                                 <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>
-                                <Text style={{marginRight: 20}}>-{item.montant}</Text>
+                                <Text style={{marginRight: 20}}>{item.type === 'revenu' ? '+'+item.montant : '-'+item.montant}</Text>
                               </View> 
                           )}
-                          renderSectionHeader={({ section: { title,montant } }) => (
+                          renderSectionHeader={({ section: { title,depense_total,revenu_total } }) => (
                               <View style={styles.detail}>
                                 <Text style={styles.title}>{transform_date(title)}</Text>
-                                <Text><Text style={{fontStyle:'italic'}}>Total:</Text><Text style={{ fontWeight:'bold'}}>  {montant}</Text></Text>  
+                                <View style={styles.total_par_jour} >
+                                    <View style={{flexDirection:'row'}}>
+                                         <Text style={{fontStyle:'italic'}}>Dépenses :</Text><Text style={{ fontWeight:'bold' , color: 'red'}}>  {depense_total}</Text>
+                                    </View>
+                                    <View style={{flexDirection:'row'}}>
+                                          <Text style={{fontStyle:'italic'}}>Revenus :</Text><Text style={{ fontWeight:'bold', color: 'green'}}>  {revenu_total}</Text>
+                                    </View>
+                                </View>  
                               </View>
                           )}
                         />
@@ -159,10 +137,16 @@ const styles = StyleSheet.create({
     detail :{
       flexDirection: 'row',
       justifyContent: 'space-around',
-      height: 30 ,
+      height: 50 ,
       alignItems: 'center',
       backgroundColor: 'yellow',
     },
+
+    total_par_jour : {
+      flexDirection: 'column',
+      width: 150 , 
+    },  
+
     transaction: {
       flexDirection: 'row',
       justifyContent: 'space-between',

@@ -7,6 +7,7 @@ import { somme } from '../fonctions/fonctions';
 
 
 export default function PorteFeuille() {
+
   const [budgetMensuel,setBudgetMensuel] = useState(100000);
   const [depenses,setdepenses] = useState(0);
   var restant = budgetMensuel - depenses ;
@@ -21,17 +22,11 @@ export default function PorteFeuille() {
   const get_depenseMensuel= async () => {
     const db = await SQLite.openDatabaseAsync('appFiDatabase.db');
     const allRows = await  db.getAllAsync('SELECT * FROM depenses');
-
-    return new Promise(  (resolve,reject) => {
-      var T = somme(allRows);
-        resolve()
-        reject('Erreur ! ');
-        setdepenses(T);
-    })
-
-    
+    var T = somme(allRows);
+    setdepenses(T); 
   }
   
+  console.log("j");
   get_depenseMensuel();
 
  

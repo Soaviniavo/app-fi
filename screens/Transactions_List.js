@@ -19,8 +19,7 @@ export default function Transactions_List() {
 
 
   const onRefresh = async () => {
-        const  db = await SQLite.openDatabaseAsync('appFiDatabase.db');  
-        const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC '); 
+        const allRows = await getAlltransactions(); 
         const depenseMensuel = await get_depenseMensuel();
         const revenuMensuel = await get_revenuMensuel();
         settransactions(allRows);
@@ -32,10 +31,11 @@ export default function Transactions_List() {
         const Data_par_jour = to_section_data(groupedData);
        
         setsections(Data_par_jour);
-  }
+  } 
 
   
   useEffect(() => {
+
 
     const setupDatabase = async () => {
       const db = await SQLite.openDatabaseAsync('appFiDatabase.db'); 

@@ -8,7 +8,7 @@ import { somme } from '../fonctions/fonctions';
 
 export default function PorteFeuille() {
 
-  const budgetMensuel = 100000;
+  const budgetMensuel = 400000;
   const [depenses,setdepenses] = useState(0);
   const [revenus,setrevenus] = useState(0);
   var restant = budgetMensuel - depenses ;
@@ -44,9 +44,9 @@ export default function PorteFeuille() {
         <Text style={styles.title}>Budget Mensuel ({mois})</Text>
           <View style={styles.detail}>
               <Text style={styles.text}> Budget : {budgetMensuel}</Text>
+              <Text style={styles.text}> Restant : {restant}</Text>
               <Text style={styles.text}> Dépenses : {depenses}</Text>
               <Text style={styles.text}> Revenus : {revenus}</Text>
-              <Text style={styles.text}> Restant : {restant}</Text>
               <Text style={styles.text}> Argent epargné : {epargne} </Text>
               <Text style={styles.text}>Graphe Reste du Budget( moins dépense )</Text>
           </View>

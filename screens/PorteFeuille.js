@@ -41,14 +41,18 @@ export default function PorteFeuille() {
 
     <View style={styles.container}>
       <View style={styles.content}>  
-        <Text style={styles.title}>Budget Mensuel ({mois})</Text>
+        <Text style={styles.title}>Statistiques Mensuelles ({mois})</Text>
           <View style={styles.detail}>
-              <Text style={styles.text}> Budget : {budgetMensuel}</Text>
-              <Text style={styles.text}> Restant : {restant}</Text>
               <Text style={styles.text}> Dépenses : {depenses}</Text>
               <Text style={styles.text}> Revenus : {revenus}</Text>
               <Text style={styles.text}> Argent epargné : {epargne} </Text>
-              <Text style={styles.text}>Graphe Reste du Budget( moins dépense )</Text>
+          </View>
+      </View>
+      <View style={styles.content}>  
+        <Text style={styles.title}>Budget Mensuel </Text>
+          <View style={styles.detail}>
+              <Text style={styles.text}> Budget : {budgetMensuel}</Text>
+              <Text style={styles.text}> Restant : {restant}</Text>
           </View>
       </View>
     </View>
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#bbb",
-    height: 250
+    height: 150
   },
   detail : {
     marginLeft : 20,

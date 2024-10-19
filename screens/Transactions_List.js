@@ -88,8 +88,8 @@ export default function Transactions_List() {
         <View style={styles.container}> 
                 <View style={styles.trans_mois} >
                      <Text>Ce Mois</Text> 
-                     <Text>Dépenses :{SommeDepMensuel} </Text> 
-                     <Text>revenus :{SommeRevMensuel} </Text> 
+                     <Text>Dépenses : {SommeDepMensuel} </Text> 
+                     <Text>revenus : {SommeRevMensuel} </Text> 
                 </View>
                 <StatusBar backgroundColor="green" />          
                     {
@@ -103,7 +103,7 @@ export default function Transactions_List() {
                           sections={sections}
                           keyExtractor={(item, index) => item.date + index}
                           renderItem={({ item }) => (
-                              <View style={ item.type === 'revenu' ? [styles.transaction,{backgroundColor:'green'}] : [styles.transaction,{backgroundColor:'red'}]} >
+                              <View style={ item.type === 'revenu' ? [styles.transaction,{backgroundColor:'#D6EFD8'}] : [styles.transaction,{backgroundColor:'#FFCFB3'}]} >
                                 <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
                                 <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>
                                 <Text style={{marginRight: 20}}>{item.type === 'revenu' ? '+'+item.montant : '-'+item.montant}</Text>

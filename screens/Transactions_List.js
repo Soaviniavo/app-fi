@@ -1,11 +1,11 @@
 import React, {useState,useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,Image,RefreshControl,SectionList } from 'react-native';
+import { StyleSheet, Text, View,Image,RefreshControl,SectionList,Button } from 'react-native';
 
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused,useFocusEffect } from '@react-navigation/native';
 import { to_section_data,groupData, img_trans,somme,transform_date } from '../fonctions/fonctions';
-import { getAlltransactions , get_depenseMensuel,get_revenuMensuel } from '../database/db';
+import { getAlltransactions , get_depenseMensuel,get_revenuMensuel,deleteAll } from '../database/db';
 
 const logo_empty_list = require('../assets/Vide.png');
     
@@ -91,6 +91,22 @@ export default function Transactions_List() {
                      <Text>Dépenses : {SommeDepMensuel} </Text> 
                      <Text>revenus : {SommeRevMensuel} </Text> 
                 </View>
+             {
+                /* <Button  title={'Vider'} onPress={
+                  async () => {
+                    try {
+                      deleteAll();
+                      return console.log("insertion successfull");
+                    } catch (error) {
+                        console.error(error);
+                        throw Error("La suppression a echoué !");
+                    } 
+                  }
+                }
+              />*/
+             }
+               
+             
                 <StatusBar backgroundColor="green" />          
                     {
                         <SectionList 
@@ -103,7 +119,7 @@ export default function Transactions_List() {
                           sections={sections}
                           keyExtractor={(item, index) => item.date + index}
                           renderItem={({ item }) => (
-                              <View style={ item.type === 'revenu' ? [styles.transaction,{backgroundColor:'#D6EFD8'}] : [styles.transaction,{backgroundColor:'#FFCFB3'}]} >
+                              <View style={ item.type === 'revenu' ? [styles.transaction] : [styles.transaction]} >
                                 <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
                                 <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>
                                 <Text style={{marginRight: 20}}>{item.type === 'revenu' ? '+'+item.montant : '-'+item.montant}</Text>

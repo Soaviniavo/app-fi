@@ -7,7 +7,7 @@ export const getDatabase = async () => {
 
 export const getAlltransactions = async () => {
   const db = await getDatabase();
-  const allRows = await db.getAllAsync('SELECT * FROM transactions ORDER BY date DESC');
+  const allRows = await db.getAllAsync("SELECT * FROM transactions ORDER BY strftime('%d', date) DESC");
   return allRows ; 
 }
 
@@ -34,7 +34,7 @@ export const insertTransaction = async (_note,_montant,_date,_categorie,_type) =
   await statement.executeAsync([_note,_montant,_date,_categorie,_type]);
 }
 
-export const deleteAllDepenses = async () => {
+export const deleteAll = async () => {
    const db = await getDatabase();
    await db.runAsync(
     'DELETE FROM transactions'

@@ -53,7 +53,7 @@ export default function App() {
                      return <Image source={focused ? transaction_icon : NFtransaction_icon } style={focused? styles.FocusedIcon : styles.notFocusedIcon} />
                  else if (route.name === 'Portefeuille')
                      return  <Image source={focused ? portefeuille_icon : NFportefeuille_icon} style={focused? styles.FocusedIcon : styles.notFocusedIcon} />
-                 else if (route.name === 'Graphe')
+                 else if (route.name === 'Stats')
                      return <Image source={focused ? graphe_icon : NFgraphe_icon} style={focused? styles.FocusedIcon : styles.notFocusedIcon} />
                  else if (route.name === 'Liste')
                      return <Image source={focused ? liste_icon : NFliste_icon} style={focused? styles.FocusedIcon : styles.notFocusedIcon} />    
@@ -71,7 +71,7 @@ export default function App() {
               />
               <Tab.Screen name="Ajouter" component={Transaction_Stack}/>
               <Tab.Screen name="Portefeuille" component={PorteFeuille}/>
-              <Tab.Screen name="Graphe" component={Graphe}/>
+              <Tab.Screen name="Stats" component={Graphe}/>
         </Tab.Navigator>
 
         </KeyboardAvoidingView>

@@ -106,6 +106,10 @@ export const To_letter_mois = (mois) => {
 }
 
 export const img_trans = (transaction_name) => {
+    if(transaction_name === 'Carburant'){
+        let img = require('../assets/categories_depense/carburant.png');
+        return img;
+    }
     if(transaction_name === 'Transport'){
       let img = require('../assets/categories_depense/transport.png');
       return img;
@@ -178,10 +182,10 @@ export const img_trans = (transaction_name) => {
         let img = require('../assets/categories_depense/Musique.png');
         return img;
     }
-
-
-
-
+    if(transaction_name === 'Loyer'){
+        let img = require('../assets/categories_depense/Loyer.png');
+        return img;
+    }
     if(transaction_name === 'Salaire'){
         let img = require('../assets/categories_revenu/salaire.png') ;
         return img;

@@ -106,6 +106,10 @@ export const To_letter_mois = (mois) => {
 }
 
 export const img_trans = (transaction_name) => {
+    if(transaction_name === 'Santé'){
+        let img = require('../assets/categories_depense/santé.png');
+        return img;
+    }
     if(transaction_name === 'Carburant'){
         let img = require('../assets/categories_depense/carburant.png');
         return img;

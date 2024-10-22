@@ -2,8 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
 import Transactions_List from './screens/Transactions_List'
 import PorteFeuille from './screens/PorteFeuille';
-import Graphe from './screens/Graphe';
+import Stats from './screens/Stats';
 import { Transaction_Stack } from './transactionstack';
+import { Stats_Stack } from './statsstack';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { Image,StyleSheet } from 'react-native';
 
@@ -58,7 +59,8 @@ export default function App() {
                  else if (route.name === 'Liste')
                      return <Image source={focused ? liste_icon : NFliste_icon} style={focused? styles.FocusedIcon : styles.notFocusedIcon} />    
               }, 
-              headerShown : route.name === "Ajouter" ? false : true
+              headerShown : route.name === "Ajouter" ? false : true,
+              headerShown : route.name === "Stats" ? false : true
             })}
         >
               <Tab.Screen name="Liste" component={Transactions_List}
@@ -71,7 +73,7 @@ export default function App() {
               />
               <Tab.Screen name="Ajouter" component={Transaction_Stack}/>
               <Tab.Screen name="Portefeuille" component={PorteFeuille}/>
-              <Tab.Screen name="Stats" component={Graphe}/>
+              <Tab.Screen name="Stats" component={Stats_Stack}/>
         </Tab.Navigator>
 
         </KeyboardAvoidingView>

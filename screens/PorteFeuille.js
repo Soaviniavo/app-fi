@@ -1,9 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import { View, Text,StyleSheet,ScrollView,Button } from 'react-native';
-import { To_letter_mois } from '../fonctions/fonctions';
+import { To_letter_mois,somme } from '../fonctions/fonctions';
 import {  get_depenseMensuel,get_revenuMensuel } from '../database/db';
 import * as SQLite from 'expo-sqlite';
-import { somme } from '../fonctions/fonctions';
 import PieChart from 'react-native-pie-chart'
 
 

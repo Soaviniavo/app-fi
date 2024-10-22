@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { View, Text,StyleSheet,ScrollView,Button } from 'react-native';
+import { View, Text,StyleSheet,ScrollView,Button,Image } from 'react-native';
 import { To_letter_mois,somme } from '../fonctions/fonctions';
 import {  get_depenseMensuel,get_revenuMensuel } from '../database/db';
 import * as SQLite from 'expo-sqlite';
@@ -46,7 +46,10 @@ export default function PorteFeuille() {
     <ScrollView style={{backgroundColor: "#fff"}} >
       <View style={styles.container} >
           <View style={styles.content}>  
-            <Text style={styles.title}> {mois}</Text>
+            <View style={styles.content_title}>
+              <Image source={require('../assets/img/appointment.png')} style={{ width:30 , height:30}}/>
+              <Text style={styles.title}> {mois}</Text>
+            </View>
               <View style={styles.detail}>
                   <Text style={styles.text}> Dépenses : {depenses}</Text>
                   <Text style={styles.text}> Revenus : {revenus}</Text>
@@ -54,7 +57,10 @@ export default function PorteFeuille() {
               </View>
           </View>
           <View style={[styles.content,styles.graph_content]}>  
-            <Text style={styles.title}>Budget Mensuel </Text>
+              <View style={styles.content_title}>
+                <Image source={require('../assets/img/budget.png')} style={{ width:30 , height:30}}/>
+                <Text style={styles.title}>Budget Mensuel </Text>
+              </View>
               <View style={styles.detail}>
                   <Text style={styles.text}> Budget : {budgetMensuel}</Text>
                   <Text style={styles.text}> Restant : {restant}</Text>
@@ -70,7 +76,10 @@ export default function PorteFeuille() {
               </View>
           </View>
           <View style={[styles.content,styles.epargne_content]}>  
-            <Text style={styles.title}>Epargne</Text>
+              <View style={styles.content_title}>
+                <Image source={require('../assets/img/jar.png')} style={styles.img}/>
+                <Text style={styles.title}>Epargne</Text>
+              </View>
               <View style={styles.detail}>
                   <Text style={styles.text}>Le mois dernier : 400 000</Text>
                   <Text style={styles.text}>Votre epargne Totale : 1 321 700</Text>
@@ -92,16 +101,27 @@ const styles = StyleSheet.create({
     alignItems:'center',
     marginBottom: 15 
   },
+  content_title:{
+    flexDirection:'row',
+    height:35,
+    alignItems: 'center',
+    marginLeft:10
+  },
   title: { 
-    marginTop: 10,
+    marginTop: 4,
     marginLeft:10,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight : '500'
+  },
+  img:{
+     width:30 ,
+     height:30,
   },
   text: {
     color: '#747264',
     fontSize : 15,
-    margin: 3
+    margin: 3,
+    fontStyle:'italic'
   },  
   content : {
     marginTop: 20,

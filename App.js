@@ -60,7 +60,6 @@ export default function App() {
                      return <Image source={focused ? liste_icon : NFliste_icon} style={focused? styles.FocusedIcon : styles.notFocusedIcon} />    
               }, 
               headerShown : route.name === "Ajouter" ? false : true,
-              headerShown : route.name === "Stats" ? false : true
             })}
         >
               <Tab.Screen name="Liste" component={Transactions_List}
@@ -73,7 +72,11 @@ export default function App() {
               />
               <Tab.Screen name="Ajouter" component={Transaction_Stack}/>
               <Tab.Screen name="Portefeuille" component={PorteFeuille}/>
-              <Tab.Screen name="Stats" component={Stats_Stack}/>
+              <Tab.Screen name="Stats" component={Stats_Stack}
+                    options={{
+                      headerShown: false 
+                    }}  
+              />
         </Tab.Navigator>
 
         </KeyboardAvoidingView>

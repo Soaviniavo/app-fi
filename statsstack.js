@@ -1,5 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Stats from './screens/Stats'
+import Stats_depenses from './screens/stats/stats_depenses'
+import Stats_revenus from './screens/stats/stats_revenus'
 import { Button, View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +20,18 @@ export const Stats_Stack = ({navigation}) => {
            >  
            <Stack.Screen
                 name='Statistiques' component={Stats}
+            />
+            <Stack.Screen
+                name='stats_dep' component={Stats_depenses}
+                options={{
+                    title: 'Statistiques des dépenses',
+                }}
+            />
+            <Stack.Screen
+                name='stats_rev' component={Stats_revenus}
+                options={{
+                    title: 'Statistiques des revenus',
+                }}
             />
            </Stack.Navigator>
 }

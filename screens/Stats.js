@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
 import {  get_depenseMensuel,get_revenuMensuel } from '../database/db';
 import { To_letter_mois,somme } from '../fonctions/fonctions';
 
-export default function Stats() {
+export default function Stats({ navigation }) {
   const [depenses,setdepenses] = useState(0);
   const [revenus,setrevenus] = useState(0);
   //Calcul Mois 
@@ -16,7 +16,7 @@ export default function Stats() {
         const dataMensuel= async () => {
           const depenseMensuel = await get_depenseMensuel();
           const revenuMensuel = await get_revenuMensuel();
-          setdepenses(somme(depenseMensuel))
+          setdepenses(somme(depenseMensuel));
           setrevenus(somme(revenuMensuel));
         }
         
@@ -33,13 +33,17 @@ export default function Stats() {
               <Text style={styles.text}> Revenus : {revenus}</Text>
           </View>
        </View>
-       <View style={[styles.content,styles.stat]}>
-         <Text style={{marginLeft : 10}}>Statistiques des dépenses de ce mois</Text>
-       </View>
-       <View style={[styles.content,styles.stat]}>
-          <Text>Statistiques des revenus de ce mois</Text>
-       </View>
-      </View>
+       <TouchableOpacity  onPress={() => navigation.navigate("stats_dep")}>
+          <View style={[styles.content,styles.stat]}>
+            <Text style={{marginLeft : 10}}>Statistiques des dépenses</Text>
+          </View>
+       </TouchableOpacity>
+       <TouchableOpacity onPress={() => navigation.navigate("stats_rev")}>
+          <View style={[styles.content,styles.stat]}>
+              <Text style={{marginLeft : 10}} >Statistiques des revenus</Text>
+          </View>
+       </TouchableOpacity>
+    </View>
   );
 }
 
@@ -48,7 +52,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems:'center',
-    marginBottom: 15 
   },
   title: { 
     marginTop: 10,

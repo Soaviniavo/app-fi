@@ -3,7 +3,8 @@ import { View, Text,StyleSheet,ScrollView,Button,Image } from 'react-native';
 import { To_letter_mois,somme } from '../fonctions/fonctions';
 import {  get_depenseMensuel,get_revenuMensuel } from '../database/db';
 import * as SQLite from 'expo-sqlite';
-import PieChart from 'react-native-pie-chart'
+import PieChart from 'react-native-pie-chart';
+
 
 
 export default function PorteFeuille() {

@@ -29,7 +29,7 @@ export const insertTransaction = async (_note,_montant,_date,_categorie,_type) =
   const db = await getDatabase();
   console.log(_note,_montant,_date,_categorie,_type);
   const statement = await db.prepareAsync(
-    'INSERT INTO transactions (note,montant,date,categorie,type) VALUES (?,?,?,?,?)'
+    "INSERT INTO transactions (note,montant,date,categorie,type) VALUES (?,?,?,?,?)"
   );
   await statement.executeAsync([_note,_montant,_date,_categorie,_type]);
 }

@@ -47,7 +47,7 @@ export default function PorteFeuille() {
       <View style={styles.container} >
           <View style={styles.content}>  
             <View style={styles.content_title}>
-              <Image source={require('../assets/img/appointment.png')} style={{ width:30 , height:30}}/>
+              <Image source={require('../assets/img/appointment.png')} style={styles.img}/>
               <Text style={styles.title}> {mois}</Text>
             </View>
               <View style={styles.detail}>
@@ -58,7 +58,7 @@ export default function PorteFeuille() {
           </View>
           <View style={[styles.content,styles.graph_content]}>  
               <View style={styles.content_title}>
-                <Image source={require('../assets/img/budget.png')} style={{ width:30 , height:30}}/>
+                <Image source={require('../assets/img/budget.png')} style={styles.img}/>
                 <Text style={styles.title}>Budget Mensuel </Text>
               </View>
               <View style={styles.detail}>
@@ -82,7 +82,7 @@ export default function PorteFeuille() {
               </View>
               <View style={styles.detail}>
                   <Text style={styles.text}>Le mois dernier : 400 000</Text>
-                  <Text style={styles.text}>Votre epargne Totale : 1 321 700</Text>
+                  <Text style={styles.text}>Votre épargne Totale : 1 321 700</Text>
               </View>
               <View style={styles.btn}>
                  <Button  title={'Créer Un Objectif financier'} />

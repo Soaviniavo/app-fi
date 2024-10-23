@@ -119,6 +119,7 @@ export default function Transactions_List() {
                           sections={sections}
                           keyExtractor={(item, index) => item.date + index}
                           renderItem={({ item }) => (
+                            // repère pour des conditions comme ci dessous 
                               <View style={ item.type === 'revenu' ? [styles.transaction] : [styles.transaction]} >
                                 <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
                                 <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>

@@ -3,7 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Image,RefreshControl,SectionList,Button } from 'react-native';
 
 import * as SQLite from 'expo-sqlite';
-import { useIsFocused,useFocusEffect } from '@react-navigation/native';
 import { to_section_data,groupData, img_trans,somme,transform_date } from '../fonctions/fonctions';
 import { getAlltransactions , get_depenseMensuel,get_revenuMensuel,deleteAll } from '../database/db';
 
@@ -16,6 +15,7 @@ export default function Transactions_List() {
   const [sections,setsections] = useState([]);
   const [SommeDepMensuel,setSommeDepMensuel] = useState(0);
   const [SommeRevMensuel,setSommeRevMensuel] = useState(0);
+  const [isLoading,setIsLoading] = useState(true);
 
 
   const onRefresh = async () => {
@@ -33,14 +33,10 @@ export default function Transactions_List() {
         setsections(Data_par_jour);
   } 
 
-  
-  useEffect(() => {
-
-
-    const setupDatabase = async () => {
-      const db = await SQLite.openDatabaseAsync('appFiDatabase.db'); 
-      try {
-        await db.execAsync(`
+  const setupDatabase = async () => {
+    const db = await SQLite.openDatabaseAsync('appFiDatabase.db'); 
+    try {
+      await db.execAsync(`
             PRAGMA journal_mode = WAL;   
             CREATE TABLE IF NOT EXISTS transactions( 
               id_trans INTEGER PRIMARY KEY NOT NULL,
@@ -51,36 +47,38 @@ export default function Transactions_List() {
               type VARCHAR(20) 
             ); 
         `);  
-      
-        const allRows = await getAlltransactions(); 
-        const depenseMensuel = await get_depenseMensuel();
-        const revenuMensuel = await get_revenuMensuel();
+      const allRows = await getAlltransactions(); 
+      const depenseMensuel = await get_depenseMensuel();
+      const revenuMensuel = await get_revenuMensuel();
 
-        settransactions(allRows);
-        setSommeDepMensuel(somme(depenseMensuel));
-        setSommeRevMensuel(somme(revenuMensuel));
-        
+      settransactions(allRows);
+      setSommeDepMensuel(somme(depenseMensuel));
+      setSommeRevMensuel(somme(revenuMensuel));
 
+      // Grouper les transactions par jours et mettre à jour sections
+      const groupedData = groupData(allRows);
+      const Data_par_jour = to_section_data(groupedData);
+      setsections(Data_par_jour);
+    } catch (error) {  
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-         // Grouper les transactions par jours
-        const groupedData = groupData(transactions);
-        const Data_par_jour = to_section_data(groupedData);
-        setsections(Data_par_jour);
-
-
-      } catch (error) {  
-        console.error(error) ;
-        throw Error(`Failed to create tables`);
-      }
-    };
-
+  
+  useEffect(() => {
     setupDatabase();
-    
-
-
-
   },[])
 
+
+  if(isLoading){
+    return (
+      <View>
+        <Text>Chargement.... </Text>
+      </View>
+    );
+  }
   
 
    

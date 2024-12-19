@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View , Button,Image,TextInput,Pressable,Platform,StatusBar } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
-import { getDatabase, insertTransaction,deleteAllDepenses } from '../database/db';
+import {  insertTransaction } from '../database/db';
+
+import { useTransactions } from '../context/transactionsContext';
+
 
 export default function Ajout_Depense({ route, navigation }) {
+
+
+  const { addTransaction } = useTransactions();
+
 
 const [note,setnote] = useState("");
 const [montant,setmontant] = useState("");
@@ -35,8 +42,8 @@ const onChange = ({type},selectedDate) =>  {
         const currentDate = selectedDate ; 
         setdate(currentDate);
         if(Platform.OS === "android"){
+          setdate_dep(currentDate.toDateString());
             toogleDatePicker();
-            setdate_dep(currentDate.toDateString());
         }
     }else{
         toogleDatePicker();
@@ -96,7 +103,7 @@ const onChange = ({type},selectedDate) =>  {
                   try {
                     let valid_date = get_Date(date);
                     let type = "dépense";
-                    await insertTransaction(note,montant,valid_date,categorie,type);
+                    await addTransaction(note,montant,valid_date,categorie,type);
                     navigation.navigate( 'Liste');
                     return console.log("insertion successfull");
                   } catch (error) {

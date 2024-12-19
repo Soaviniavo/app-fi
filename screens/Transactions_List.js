@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View,Image,RefreshControl,SectionList,Button } from 'react-native';
+import { StyleSheet, Text, View,Image,RefreshControl,SectionList,Button,TouchableOpacity } from 'react-native';
 
 import * as SQLite from 'expo-sqlite';
 import { to_section_data,groupData, img_trans,somme,transform_date } from '../fonctions/fonctions';
@@ -8,7 +8,7 @@ import { getAlltransactions , get_depenseMensuel,get_revenuMensuel,deleteAll } f
 
 const logo_empty_list = require('../assets/Vide.png');
     
-export default function Transactions_List() { 
+export default function Transactions_List({ navigation }) { 
 
   const [transactions,settransactions] = useState([]); 
   const [refreshing,setrefreshing] = useState(false);
@@ -46,7 +46,7 @@ export default function Transactions_List() {
               categorie VARCHAR(50),
               type VARCHAR(20) 
             ); 
-        `);  
+      `);  
       const allRows = await getAlltransactions(); 
       const depenseMensuel = await get_depenseMensuel();
       const revenuMensuel = await get_revenuMensuel();
@@ -118,11 +118,13 @@ export default function Transactions_List() {
                           keyExtractor={(item, index) => item.date + index}
                           renderItem={({ item }) => (
                             // repère pour des conditions comme ci dessous 
-                              <View style={ item.type === 'revenu' ? [styles.transaction] : [styles.transaction]} >
-                                <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
-                                <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>
-                                <Text style={{marginRight: 20}}>{item.type === 'revenu' ? '+'+item.montant : '-'+item.montant}</Text>
-                              </View> 
+                              <TouchableOpacity onPress={() => navigation.navigate("Del_mod",item)}>
+                                  <View style={ item.type === 'revenu' ? [styles.transaction] : [styles.transaction]} >
+                                    <Image source={img_trans(item.categorie)} style={{width:30,height:30 , marginLeft: 15,marginBottom:5}}/>
+                                    <Text style={{ marginRight: 100, color: '#747264'}}>{item.note}</Text>
+                                    <Text style={{marginRight: 20}}>{item.type === 'revenu' ? '+'+item.montant : '-'+item.montant}</Text>
+                                  </View> 
+                              </TouchableOpacity>
                           )}
                           renderSectionHeader={({ section: { title,depense_total,revenu_total } }) => (
                               <View style={styles.detail}>

@@ -16,9 +16,11 @@ import NFtransaction_icon from './assets/money-transfer (1).png';
 import NFliste_icon from './assets/liste-de-controle (1).png' ;
 import NFportefeuille_icon from './assets/portefeuille (1).png';
 import NFgraphe_icon from './assets/charte-de-croissance.png';
+import { TransactionListStack } from './transactionListStack';
 const Tab = createBottomTabNavigator();
 
-const logo_img = require('./assets/LogoISPM.png');
+import { TransactionsProvider } from './context/transactionsContext';
+
 
 
 export default function App() {
@@ -26,7 +28,9 @@ export default function App() {
 
 
   return (
-    <NavigationContainer>
+    <TransactionsProvider>
+
+<NavigationContainer>
         <KeyboardAvoidingView style={{flex:1}} >
         <Tab.Navigator
             screenOptions = {({route}) => ({
@@ -62,13 +66,10 @@ export default function App() {
               headerShown : route.name === "Ajouter" ? false : true,
             })}
         >
-              <Tab.Screen name="Liste" component={Transactions_List}
-                  options={{
-                    headerTitle: "Mes Transactions" ,
-                    headerRight: () => (
-                      <Image source={logo_img}  style={{width: 40 , height: 40, borderRadius: 50, marginRight: 20}}/>
-                    )                    
-                  }}
+              <Tab.Screen name="Liste" component={TransactionListStack}
+                    options={{
+                      headerShown: false       
+                    }}  
               />
               <Tab.Screen name="Ajouter" component={Transaction_Stack}/>
               <Tab.Screen name="Portefeuille" component={PorteFeuille}/>
@@ -81,6 +82,8 @@ export default function App() {
 
         </KeyboardAvoidingView>
     </NavigationContainer>
+
+    </TransactionsProvider>
   );
 }
 

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View,Image,TouchableOpacity,Modal,TextInput,Pressable,Platform } from 'react-native';
 import { img_trans,transform_date } from '../../fonctions/fonctions';
-import { deleteOneTransaction,modifyOneTransaction } from '../../database/db';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
+import { useTransactions } from '../../context/transactionsContext';
 
 
 export default function D_m({route,navigation}){
+
+    const { removeTransaction,updateTransaction } = useTransactions();
     const categorie = route.params.categorie ; 
     const type = route.params.type ; 
     const note = route.params.note ; 
@@ -75,7 +77,7 @@ export default function D_m({route,navigation}){
                 <TouchableOpacity onPress={
                     async () => {
                         try {
-                            deleteOneTransaction(id);
+                            removeTransaction(id);
                             console.log("transaction supprimé");
                         } catch (error) {
                             console.log(error);
@@ -136,7 +138,7 @@ export default function D_m({route,navigation}){
                         async ()=> {
                             try {
                                 let valid_date = get_Date(update_date);
-                                modifyOneTransaction(id,update_note,update_montant,valid_date)
+                                updateTransaction(id,update_note,update_montant,valid_date)
                                 console.log('transactionn modifié!!');
                             } catch (error) {
                                 console.log(error)

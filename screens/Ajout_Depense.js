@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View , Button,Image,TextInput,Pressable,Platform,StatusBar } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
-import {  insertTransaction } from '../database/db';
-
 import { useTransactions } from '../context/transactionsContext';
 
 
 export default function Ajout_Depense({ route, navigation }) {
 
 
-  const { addTransaction } = useTransactions();
+const { addTransaction } = useTransactions();
 
 
 const [note,setnote] = useState("");

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View , Button,Image,TextInput,Pressable,Platform,StatusBar } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
-import { getDatabase, insertTransaction } from '../database/db';
+import { useTransactions } from '../context/transactionsContext';
 
 
 export default function Ajout_Depense({ route, navigation }) {
@@ -12,6 +12,8 @@ export default function Ajout_Depense({ route, navigation }) {
     const [showpicker,setshowpicker] = useState(false);
     const [date_dep,setdate_dep] = useState("");
     const [isdisabled_btn,setisdisable_btn] = useState(true);
+    const { addTransaction } = useTransactions();
+
 
     const  categorie  = route.params.categorie ;
     const  icon_img  = route.params.icon_img ; 
@@ -96,7 +98,7 @@ export default function Ajout_Depense({ route, navigation }) {
                       try {
                         let valid_date = get_Date(date);
                         let type = "revenu";
-                        await insertTransaction(note,montant,valid_date,categorie,type);
+                        await addTransaction(note,montant,valid_date,categorie,type);
                         navigation.navigate( 'Liste');
                         return console.log("insertion successfull");
                       } catch (error) {

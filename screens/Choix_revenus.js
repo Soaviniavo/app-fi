@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View,ScrollView ,Image, TouchableOpacity,StatusBar } from 'react-native';
-import categories_rev from '../data/categories/revenus';
+import categories_rev from '../data/revenus';
 export default function Transactions({ navigation }) {
 
 

@@ -1,29 +1,17 @@
 import React,{useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TouchableOpacity,Image } from 'react-native';
-import {  get_depenseMensuel,get_revenuMensuel } from '../database/db';
 import { To_letter_mois,somme } from '../fonctions/fonctions';
+import { useTransactions } from '../context/transactionsContext';
+
 
 export default function Stats({ navigation }) {
-  const [depenses,setdepenses] = useState(0);
-  const [revenus,setrevenus] = useState(0);
-  var epargne = revenus - depenses ; 
+  const { SommeDepMensuel,SommeRevMensuel } = useTransactions();
+ 
+  var epargne = SommeRevMensuel - SommeDepMensuel ; 
   //Calcul Mois 
   var today = new Date();
   var mois = To_letter_mois(today.getMonth() + 1) ;
 
-    useEffect(() => {
-        
-        // calcul dépenses total 
-        const dataMensuel= async () => {
-          const depenseMensuel = await get_depenseMensuel();
-          const revenuMensuel = await get_revenuMensuel();
-          setdepenses(somme(depenseMensuel));
-          setrevenus(somme(revenuMensuel));
-        }
-        
-        dataMensuel();
-
-    },[]);
 
   return (
     <View style={styles.container}>
@@ -33,8 +21,8 @@ export default function Stats({ navigation }) {
               <Text style={styles.title}>Statistiques Mensuelles ({mois})</Text>
           </View>
           <View style={styles.detail}>
-              <Text style={styles.text}> Dépenses : {depenses}</Text>
-              <Text style={styles.text}> Revenus : {revenus}</Text>
+              <Text style={styles.text}> Dépenses : {SommeDepMensuel}</Text>
+              <Text style={styles.text}> Revenus : {SommeRevMensuel}</Text>
               <Text style={styles.text}> Argent epargné : {epargne} </Text>
           </View>
        </View>

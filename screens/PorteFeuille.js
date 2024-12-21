@@ -1,19 +1,17 @@
 import React,{useState,useEffect} from 'react';
 import { View, Text,StyleSheet,ScrollView,Button,Image } from 'react-native';
 import { To_letter_mois,somme } from '../fonctions/fonctions';
-import {  get_depenseMensuel,get_revenuMensuel } from '../database/db';
-import * as SQLite from 'expo-sqlite';
 import PieChart from 'react-native-pie-chart';
+import { useTransactions } from '../context/transactionsContext';
 
 
 
 export default function PorteFeuille() {
 
+  const { SommeDepMensuel,SommeRevMensuel } = useTransactions();
   const budgetMensuel = 700000;
-  const [depenses,setdepenses] = useState(0);
-  const [revenus,setrevenus] = useState(0);
-  var restant = budgetMensuel - depenses ;
-  var epargne = revenus - depenses ; 
+  var restant = budgetMensuel - SommeDepMensuel ;
+  var epargne = SommeRevMensuel- SommeDepMensuel ; 
   var pourcentage = Math.round((100 * restant) / budgetMensuel) ; 
   //Calcul Mois 
   var today = new Date();
@@ -23,21 +21,6 @@ export default function PorteFeuille() {
   const series = [restant,budgetMensuel-restant];
   const sliceColor = ['#A0D683', '#DEE5D4'];
 
-  
-  
-  useEffect(() => {
-    
-      // calcul dépenses total 
-      const dataMensuel= async () => {
-        const depenseMensuel = await get_depenseMensuel();
-        const revenuMensuel = await get_revenuMensuel();
-        setdepenses(somme(depenseMensuel))
-        setrevenus(somme(revenuMensuel));
-      }
-      
-      dataMensuel();
-
-  },[])
 
 
 
@@ -52,8 +35,8 @@ export default function PorteFeuille() {
               <Text style={styles.title}> {mois}</Text>
             </View>
               <View style={styles.detail}>
-                  <Text style={styles.text}> Dépenses : {depenses}</Text>
-                  <Text style={styles.text}> Revenus : {revenus}</Text>
+                  <Text style={styles.text}> Dépenses : {SommeDepMensuel}</Text>
+                  <Text style={styles.text}> Revenus : {SommeRevMensuel}</Text>
                   <Text style={styles.text}> Argent epargné : {epargne} </Text>
               </View>
           </View>

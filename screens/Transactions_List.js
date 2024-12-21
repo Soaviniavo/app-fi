@@ -1,62 +1,29 @@
 import React, {useState,useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,Image,RefreshControl,SectionList,Button,TouchableOpacity } from 'react-native';
+import { to_section_data,groupData, img_trans,transform_date } from '../fonctions/fonctions';
+import { useTransactions } from '../context/transactionsContext';
 
-import * as SQLite from 'expo-sqlite';
-import { to_section_data,groupData, img_trans,somme,transform_date } from '../fonctions/fonctions';
-import { getAlltransactions , get_depenseMensuel,get_revenuMensuel,deleteAll } from '../database/db';
 
 const logo_empty_list = require('../assets/Vide.png');
     
 export default function Transactions_List({ navigation }) { 
 
-  const [transactions,settransactions] = useState([]); 
   const [refreshing,setrefreshing] = useState(false);
   const [sections,setsections] = useState([]);
-  const [SommeDepMensuel,setSommeDepMensuel] = useState(0);
-  const [SommeRevMensuel,setSommeRevMensuel] = useState(0);
   const [isLoading,setIsLoading] = useState(true);
-
+  const { transactions,SommeDepMensuel,SommeRevMensuel } = useTransactions();
 
   const onRefresh = async () => {
-        const allRows = await getAlltransactions(); 
-        const depenseMensuel = await get_depenseMensuel();
-        const revenuMensuel = await get_revenuMensuel();
-        settransactions(allRows);
-        setSommeDepMensuel(somme(depenseMensuel));
-        setSommeRevMensuel(somme(revenuMensuel));
-
-        // Grouper les transactions par jours
-        const groupedData =  groupData(transactions);
-        const Data_par_jour = to_section_data(groupedData);
-       
-        setsections(Data_par_jour);
+       PrepareSection();
   } 
 
-  const setupDatabase = async () => {
-    const db = await SQLite.openDatabaseAsync('appFiDatabase.db'); 
+
+  // section pour l' affichage des transactions par date 
+  const PrepareSection = async () => {
     try {
-      await db.execAsync(`
-            PRAGMA journal_mode = WAL;   
-            CREATE TABLE IF NOT EXISTS transactions( 
-              id_trans INTEGER PRIMARY KEY NOT NULL,
-              note VARCHAR(100),
-              montant VARCHAR(50),  
-              date DATE,
-              categorie VARCHAR(50),
-              type VARCHAR(20) 
-            ); 
-      `);  
-      const allRows = await getAlltransactions(); 
-      const depenseMensuel = await get_depenseMensuel();
-      const revenuMensuel = await get_revenuMensuel();
-
-      settransactions(allRows);
-      setSommeDepMensuel(somme(depenseMensuel));
-      setSommeRevMensuel(somme(revenuMensuel));
-
       // Grouper les transactions par jours et mettre à jour sections
-      const groupedData = groupData(allRows);
+      const groupedData = groupData(transactions);
       const Data_par_jour = to_section_data(groupedData);
       setsections(Data_par_jour);
     } catch (error) {  
@@ -68,8 +35,10 @@ export default function Transactions_List({ navigation }) {
 
   
   useEffect(() => {
-    setupDatabase();
-  },[])
+    if (transactions.length > 0) {
+      PrepareSection(); // Exécuter seulement si `transactions` contient des données
+    }
+  }, [transactions]);
 
 
   if(isLoading){

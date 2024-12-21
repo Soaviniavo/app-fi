@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Transactions_List from './screens/Transactions_List'
 import D_m from './screens/delete_Modif/D_m'
 import { Image } from 'react-native-svg';
-import Test from './screens/testContext';
 
 const Stack = createNativeStackNavigator();
 const logo_img = require('./assets/LogoISPM.png');
@@ -10,7 +9,7 @@ const logo_img = require('./assets/LogoISPM.png');
 
 export const TransactionListStack = ({navigation}) => {
     return <Stack.Navigator 
-                initialRouteName="test"
+                initialRouteName="transactionListe"
                 screenOptions={{
                     headerShadowVisible: false,
                     headerTintColor : "#747264",
@@ -22,13 +21,6 @@ export const TransactionListStack = ({navigation}) => {
                     headerTitle: "Supprimer ou Modifier" ,        
                 }}
            />
-
-            <Stack.Screen name='test' component={Test}
-                options={{
-                    headerTitle: "Test useContext" ,        
-                }}
-           />
-
             <Stack.Screen
                 name='transactionListe' component={Transactions_List}
                 options={{

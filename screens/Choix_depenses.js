@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View,ScrollView ,Image, TouchableOpacity,StatusBar } from 'react-native';
-import categories_dep from '../data/categories/depenses';
+import categories_dep from '../data/depenses';
 
 
 export default function Transactions({ navigation }) {

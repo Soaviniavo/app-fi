@@ -20,9 +20,9 @@ export const initDatabase = async () => {
       ); 
   `); 
   } catch (error) {
-    console.error(error); 
+     throw error;
   }finally{
-    console.log("database created !");
+    console.log("database init !");
   }
 }
 
@@ -55,6 +55,8 @@ export const insertTransaction = async (_note,_montant,_date,_categorie,_type,ca
   );
   try{
     await statement.executeAsync([_note,_montant,_date,_categorie,_type]);
+  }catch{
+    throw error ; 
   } finally{
     await statement.finalizeAsync();
     callback();
@@ -68,16 +70,29 @@ export const deleteAll = async () => {
    );
 }
 
-export const deleteOneTransaction = async (_id_trans) => {
+export const deleteOneTransaction = async (_id_trans,callback) => {
   const db = await getDatabase();
-  await db.runAsync(
-    'DELETE FROM transactions WHERE id_trans = $id_trans',{$id_trans: _id_trans}
-  );
+  try {
+    await db.runAsync(
+      'DELETE FROM transactions WHERE id_trans = $id_trans',{$id_trans: _id_trans}
+    );
+  } catch (error) {
+    throw error
+  }finally{
+    callback();
+  }
+ 
 }
 
-export const modifyOneTransaction = async (_id_trans,_note,_montant,_date) => {
+export const modifyOneTransaction = async (_id_trans,_note,_montant,_date,callback) => {
   const db = await getDatabase();
-  await db.runAsync(
-    'UPDATE transactions SET  note = $note, montant = $montant, date = $date  WHERE id_trans = $id_trans ',{$note: _note ,$montant : _montant,$date: _date, $id_trans : _id_trans}
-  );
+  try {
+    await db.runAsync(
+      'UPDATE transactions SET  note = $note, montant = $montant, date = $date  WHERE id_trans = $id_trans ',{$note: _note ,$montant : _montant,$date: _date, $id_trans : _id_trans}
+    );
+  } catch (error) {
+    throw error;
+  }finally{
+    callback();
+  }
 }

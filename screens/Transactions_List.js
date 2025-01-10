@@ -48,6 +48,15 @@ export default function Transactions_List({ navigation }) {
       </View>
     );
   }
+
+  if (transactions.length < 0) {
+      return(
+        <View style={{alignItems: 'center', marginTop: 200}}>
+          <Image source={logo_empty_list} style={{width:70,height:70 ,marginBottom:5}}/>
+          <Text>Aucune Transaction !</Text>
+        </View>
+      );
+  }
   
 
    

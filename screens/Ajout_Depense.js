@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View , Button,Image,TextInput,Pressable,Platform,StatusBar } from 'react-native';
+import { StyleSheet, Text, View , Button,Image,TextInput,Pressable,Platform,StatusBar,Modal } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { useTransactions } from '../context/transactionsContext';
 
@@ -7,8 +7,8 @@ import { useTransactions } from '../context/transactionsContext';
 export default function Ajout_Depense({ route, navigation }) {
 
 
-const { addTransaction } = useTransactions();
-
+const { addTransaction,SommeDepMensuel,SommeRevMensuel } = useTransactions();
+const [modalVisible, setModalVisible] = useState(false);
 
 const [note,setnote] = useState("");
 const [montant,setmontant] = useState("");
@@ -50,6 +50,7 @@ const onChange = ({type},selectedDate) =>  {
 
 
   return (
+   
     <View style={Styles.container}>
         <StatusBar backgroundColor="green" />
         
@@ -98,20 +99,48 @@ const onChange = ({type},selectedDate) =>  {
          <View style={{marginTop:20}}>
               <Button  title={'Enregistrer'} onPress={
                 async () => {
-                  try {
-                    let valid_date = get_Date(date);
-                    let type = "dépense";
-                    await addTransaction(note,montant,valid_date,categorie,type);
-                    navigation.navigate( 'Liste');
-                    return console.log("insertion successfull");
-                  } catch (error) {
-                      console.error(error);
-                      throw Error("L'insertion a echoué !");
-                  } 
+                  if(SommeRevMensuel < (SommeDepMensuel+montant)){
+                    setModalVisible(true)
+                      console.log("Pas Assez D' argent !");          
+                  }else{
+                    try {
+                      let valid_date = get_Date(date);
+                      let type = "dépense";
+                      await addTransaction(note,montant,valid_date,categorie,type);
+                      navigation.navigate( 'Liste');
+                      return console.log("insertion successfull");
+                    } catch (error) {
+                        console.error(error);
+                        throw Error("L'insertion a echoué !");
+                    } 
+                  }
                 }
               } disabled={!isdisabled_btn}/>
               
          </View>
+
+      <Modal
+        animationType="slide" // Ou "fade", "none"
+        transparent={true}    // Permet de rendre le fond transparent
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false); // Ferme le modal si l'utilisateur appuie sur "back" (Android)
+        }}
+      >
+        <View style={Styles.centeredView}>
+          <View style={Styles.modalView}>
+            <Text style={Styles.modalText}>Pas Assez de revenu !!</Text>
+
+            {/* Bouton pour fermer le pop-up */}
+            <Pressable
+              style={Styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={Styles.textStyle}>Fermer</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -152,5 +181,48 @@ const Styles = StyleSheet.create({
     marginTop:14, 
     color:"#747264",
     width : 80
-  }
+  },
+  closeButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    marginTop: 10,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // Fond semi-transparent
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: '#2196F3',
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+  },
 });

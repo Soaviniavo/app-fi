@@ -30,7 +30,11 @@ export const initDatabase = async () => {
 
 export const getAlltransactions = async () => {
   const db = await getDatabase();
-  const allRows = await db.getAllAsync("SELECT * FROM transactions ORDER BY strftime('%d', date) DESC");
+  const allRows = await db.getAllAsync("SELECT * FROM transactions ORDER BY date DESC;");
+  {/*SELECT * 
+FROM transactions
+WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')
+ORDER BY date DESC; */}
   return allRows ; 
 }
 

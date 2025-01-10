@@ -1,7 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Transactions_List from './screens/Transactions_List'
-import D_m from './screens/delete_Modif/D_m'
-import { Image } from 'react-native-svg';
+import D_m from './screens/delete_Modif/d_m'
+
+import { Image } from 'react-native-svg';   
 
 const Stack = createNativeStackNavigator();
 const logo_img = require('./assets/LogoISPM.png');

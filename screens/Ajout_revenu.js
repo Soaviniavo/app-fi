@@ -107,18 +107,6 @@ export default function Ajout_Depense({ route, navigation }) {
                       } 
                     }
                   } disabled={!isdisabled_btn}/>
-                  
-                {
-                  /*  <Button title={'Liste'} onPress={() => navigation.navigate( 'Liste')}/>
-                    <Button title={'delete'} onPress={
-                      async () => {
-                        await deleteAllDepenses(); 
-                        console.log('depenses deleted !'); 
-                      }
-                    }  />*/
-                }
-                
-
             </View>
 
         </View>

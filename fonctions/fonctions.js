@@ -12,19 +12,23 @@ import categories_rev from '../data/revenus';
 
 export const somme = (tab) => {
    var total = 0 ;
-   for(let i = 0 ; i< tab.length; i++){
-     total += parseInt(tab[i].montant);
-   } 
+   if(tab.length > 0){
+    for(let i = 0 ; i< tab.length; i++){
+        total += parseInt(tab[i].montant);
+      } 
+   }
    return total ;
 }
 
 const somme_depense_par_jour = (tab) => {
    var total = 0 ;
-   for(let i = 0 ; i< tab.length; i++){
-     if(tab[i].type === "dépense"){
-        total += parseInt(tab[i].montant);     
-     }
-   } 
+   if(tab.length > 0){
+    for(let i = 0 ; i< tab.length; i++){
+        if(tab[i].type === "dépense"){
+           total += parseInt(tab[i].montant);     
+        }
+      } 
+   }
    return total ;
 }
 

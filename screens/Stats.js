@@ -5,9 +5,8 @@ import { useTransactions } from '../context/transactionsContext';
 
 
 export default function Stats({ navigation }) {
-  const { SommeDepMensuel,SommeRevMensuel } = useTransactions();
- 
-  var epargne = SommeRevMensuel - SommeDepMensuel ; 
+  const { SommeDepMensuelle,SommeRevMensuel } = useTransactions();
+  var epargne = SommeRevMensuel - SommeDepMensuelle ; 
   //Calcul Mois 
   var today = new Date();
   var mois = To_letter_mois(today.getMonth() + 1) ;
@@ -21,7 +20,7 @@ export default function Stats({ navigation }) {
               <Text style={styles.title}>Statistiques Mensuelles ({mois})</Text>
           </View>
           <View style={styles.detail}>
-              <Text style={styles.text}> Dépenses : {SommeDepMensuel}</Text>
+              <Text style={styles.text}> Dépenses : {SommeDepMensuelle}</Text>
               <Text style={styles.text}> Revenus : {SommeRevMensuel}</Text>
               <Text style={styles.text}> Argent epargné : {epargne} </Text>
           </View>

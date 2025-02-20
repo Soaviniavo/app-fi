@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,11 +6,11 @@ import {
   ScrollView,
   Button,
   Image,
-  TouchableOpacity,
+  Pressable,
   Modal,
   TextInput,
 } from "react-native";
-import { To_letter_mois } from "../fonctions/fonctions";
+import { To_letter_mois, formatNumber } from "../fonctions/fonctions";
 import PieChart from "react-native-pie-chart";
 import { useTransactions } from "../context/transactionsContext";
 import SommeDepRev from "../components/SommeDepRev";
@@ -32,10 +32,6 @@ export default function PorteFeuille() {
   var pourcentage = Math.round((100 * restantBudget) / budgetMensuel);
   const [modalVisible, setModalVisible] = useState(false);
 
-
-  useEffect(() => {
-    console.log(SommeDepAnnuelle);
-  })
   //Calcul Mois
   const today = new Date();
   const mois = To_letter_mois(today.getMonth() + 1);
@@ -82,8 +78,8 @@ export default function PorteFeuille() {
             }}
           >
             <SommeDepRev
-              sum_dep={SommeDepMensuelle}
-              sum_rev={SommeRevMensuel}
+              sum_dep={formatNumber(SommeDepMensuelle)}
+              sum_rev={formatNumber(SommeRevMensuel)}
             />
           </View>
 
@@ -97,7 +93,10 @@ export default function PorteFeuille() {
               }}
             />
             <Text style={styles.text}>Restant :</Text>
-            <Text style={styles.Somme_value}> {restantMensuel}</Text>
+            <Text style={styles.Somme_value}>
+              {" "}
+              {formatNumber(restantMensuel)}
+            </Text>
           </View>
         </View>
 
@@ -105,67 +104,78 @@ export default function PorteFeuille() {
           //BUDGET MENSUEL
         }
 
-        <TouchableOpacity
-          onPress={() => {
-            setModalVisible(true);
-          }}
-        >
-          <View style={[styles.content, styles.graph_content]}>
-            <View style={styles.content_title}>
+        <View style={[styles.content, styles.graph_content]}>
+          <View style={styles.content_title}>
+            <Image
+              source={require("../assets/img/sac-dargent.png")}
+              style={styles.img}
+            />
+            <Text style={styles.title}>Budget Mensuel </Text>
+            <Pressable
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
               <Image
-                source={require("../assets/img/sac-dargent.png")}
-                style={styles.img}
+                source={require("../assets/img/modifier.png")}
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginLeft: 120,
+                }}
               />
-              <Text style={styles.title}>Budget Mensuel </Text>
+            </Pressable>
+          </View>
+          <View style={styles.detail}>
+            <View
+              style={{ flexDirection: "row", marginLeft: 10, marginTop: -5 }}
+            >
+              <Image
+                source={require("../assets/img/sacdargent.png")}
+                style={{
+                  width: 15,
+                  height: 15,
+                  marginTop: 2,
+                }}
+              />
+              <Text style={styles.text}>Total :</Text>
+              <Text style={styles.Somme_value}>
+                {" "}
+                {formatNumber(budgetMensuel)}
+              </Text>
             </View>
-            <View style={styles.detail}>
-              <View
-                style={{ flexDirection: "row", marginLeft: 10, marginTop: -5 }}
-              >
-                <Image
-                  source={require("../assets/img/sacdargent.png")}
-                  style={{
-                    width: 15,
-                    height: 15,
-                    marginTop: 2,
-                  }}
-                />
-                <Text style={styles.text}>Total :</Text>
-                <Text style={styles.Somme_value}> {budgetMensuel}</Text>
-              </View>
 
-              <View
-                style={{ flexDirection: "row", marginLeft: 10, marginTop: 3 }}
-              >
-                <Image
-                  source={require("../assets/img/dollar.png")}
-                  style={{
-                    width: 15,
-                    height: 15,
-                    marginTop: 2,
-                  }}
-                />
-                <Text style={styles.text}>Restant :</Text>
-                <Text style={styles.Somme_value}> {restantBudget}</Text>
-              </View>
+            <View
+              style={{ flexDirection: "row", marginLeft: 10, marginTop: 3 }}
+            >
+              <Image
+                source={require("../assets/img/dollar.png")}
+                style={{
+                  width: 15,
+                  height: 15,
+                  marginTop: 2,
+                }}
+              />
+              <Text style={styles.text}>Restant :</Text>
+              <Text style={styles.Somme_value}>
+                {" "}
+                {formatNumber(restantBudget)}
+              </Text>
+            </View>
 
-              <Text style={styles.pourcentage}>{pourcentage}%</Text>
-              <View style={styles.graph_style}>
-                <PieChart
-                  widthAndHeight={widthAndHeight}
-                  series={series}
-                  sliceColor={sliceColor}
-                  coverRadius={0.6}
-                />
-              </View>
+            <Text style={styles.pourcentage}>{pourcentage}%</Text>
+            <View style={styles.graph_style}>
+              <PieChart
+                widthAndHeight={widthAndHeight}
+                series={series}
+                sliceColor={sliceColor}
+                coverRadius={0.6}
+              />
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
 
-          {
-            /* ANNEE*/
-
-          }
+        {/* ANNEE*/}
         <View style={styles.content}>
           <View style={styles.content_title}>
             <Image
@@ -182,8 +192,8 @@ export default function PorteFeuille() {
             }}
           >
             <SommeDepRev
-              sum_dep={SommeDepAnnuelle}
-              sum_rev={SommeRevAnnuel}
+              sum_dep={formatNumber(SommeDepAnnuelle)}
+              sum_rev={formatNumber(SommeRevAnnuel)}
             />
           </View>
 
@@ -197,13 +207,14 @@ export default function PorteFeuille() {
               }}
             />
             <Text style={styles.text}>Restant :</Text>
-            <Text style={styles.Somme_value}> {restantAnnuel}</Text>
+            <Text style={styles.Somme_value}>
+              {" "}
+              {formatNumber(restantAnnuel)}
+            </Text>
           </View>
         </View>
 
-         {
-          /** Epargne */
-         }
+        {/** Epargne */}
 
         <View style={[styles.content, styles.epargne_content]}>
           <View style={styles.content_title}>
@@ -214,20 +225,30 @@ export default function PorteFeuille() {
             <Text style={styles.title}>Epargne</Text>
           </View>
           <View style={styles.detail}>
-            <Text style={styles.text}>Le mois dernier : 400 000</Text>
-            <Text style={styles.text}>Votre épargne Totale : 1 321 700</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.text}>Ce mois :</Text>
+              <Text style={styles.Somme_value}>
+                {" "}
+                {formatNumber(restantMensuel)}
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+            <Text style={styles.text}>Votre épargne Totale : </Text>
+            <Text style={styles.Somme_value}>
+                {" "}
+                {formatNumber(1321700)}
+              </Text>
+            </View>
           </View>
           <View style={styles.btn}>
             <Button title={"Créer Un Objectif financier"} />
           </View>
         </View>
       </View>
-      {
-        /**Modal Modification Budget */
-      }
+      {/**Modal Modification Budget */}
 
       <Modal
-        animationType="slide" // Ou "fade", "none"
+        animationType="fade" // Ou "fade", "none"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {

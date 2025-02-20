@@ -15,6 +15,7 @@ import {
 } from "../database/db";
 import { somme } from "../fonctions/fonctions";
 
+
 const today = new Date();
 const annee = today.getFullYear();
 const mois = today.getMonth() + 1;
@@ -60,6 +61,7 @@ export const TransactionsProvider = ({ children }) => {
     const allTransactions = await getTransactionsMensuelle(Y_M);
     setTransactions(allTransactions);
     TotalDep_Rev(Y_M);
+    Data_Portefeuille_Stats(year_month);
     console.log("Total De");
   };
 

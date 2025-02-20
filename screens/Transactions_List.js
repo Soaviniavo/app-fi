@@ -19,6 +19,7 @@ import {
   img_trans,
   transform_date,
   To_letter_mois,
+  formatNumber
 } from "../fonctions/fonctions";
 import { useTransactions } from "../context/transactionsContext";
 import SommeDepRev from "../components/SommeDepRev";
@@ -134,7 +135,7 @@ export default function Transactions_List({ navigation }) {
               />
             </View>
           </Pressable>
-          <SommeDepRev sum_dep={SommeDepMen_TransList} sum_rev={SommeRevMens_TransList} />
+          <SommeDepRev sum_dep={formatNumber(SommeDepMen_TransList)} sum_rev={formatNumber(SommeRevMens_TransList)} />
         </View>
       </View>
 
@@ -240,8 +241,8 @@ export default function Transactions_List({ navigation }) {
                 <View style={{  width: 120 }}>
                   <Text style={{ marginRight: 20 }}>
                     {item.type === "revenu"
-                      ? "+" + item.montant
-                      : "-" + item.montant}
+                      ? "+" + formatNumber(item.montant)
+                      : "-" + formatNumber(item.montant)}
                   </Text>
                 </View> 
               </View>
@@ -257,14 +258,14 @@ export default function Transactions_List({ navigation }) {
                   <Text style={{ fontStyle: "italic" }}>Dépenses :</Text>
                   <Text style={{ fontWeight: "bold", color: "red" }}>
                     {" "}
-                    {depense_total}
+                    {formatNumber(depense_total)}
                   </Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={{ fontStyle: "italic" }}>Revenus :</Text>
                   <Text style={{ fontWeight: "bold", color: "green" }}>
                     {" "}
-                    {revenu_total}
+                    {formatNumber(revenu_total)}
                   </Text>
                 </View>
               </View>

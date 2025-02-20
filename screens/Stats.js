@@ -19,11 +19,6 @@ export default function Stats({ navigation }) {
               <Image source={require('../assets/img/statistics.png')} style={{width: 30 , height: 30,marginTop: 4}}/>
               <Text style={styles.title}>Statistiques Mensuelles ({mois})</Text>
           </View>
-          <View style={styles.detail}>
-              <Text style={styles.text}> Dépenses : {SommeDepMensuelle}</Text>
-              <Text style={styles.text}> Revenus : {SommeRevMensuel}</Text>
-              <Text style={styles.text}> Argent epargné : {epargne} </Text>
-          </View>
        </View>
         <View style={[styles.content,styles.epargne]}>
             <Image source={require('../assets/img/growth.png')} style={{ width:30 , height:30,marginLeft:10}}/>

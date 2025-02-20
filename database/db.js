@@ -113,6 +113,32 @@ export const get_revenuMensuel = async (annee_mois) => {
   return allRows;
 };
 
+export const getCategorieRevenu = async (categorie,annee_mois) => {
+  const db = await getDatabase();
+  try {
+    var allRows = await db.getAllAsync(
+      'SELECT * FROM transactions WHERE type = "revenu" AND categorie = $cat AND  date LIKE $val ORDER BY  id_trans  DESC',
+      { $cat: categorie ,$val: annee_mois }
+    );
+  } catch (error) {
+    throw error ; 
+  }
+  return allRows ; 
+}
+
+export const getCategorieDepense = async (categorie,annee_mois) => {
+  const db = await getDatabase();
+  try {
+    var allRows = await db.getAllAsync(
+      'SELECT * FROM transactions WHERE type = "dépense" AND categorie = $cat AND  date LIKE $val ORDER BY  id_trans  DESC',
+      { $cat: categorie ,$val: annee_mois }
+    );
+  } catch (error) {
+    throw error ; 
+  }
+  return allRows ; 
+}
+
 export const gettransactionsAnnuelle = async (annee) => {
   const db = await getDatabase();
   try {
